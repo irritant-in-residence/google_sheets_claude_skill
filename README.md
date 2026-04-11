@@ -13,7 +13,7 @@ Give Claude this prompt to install:
 ### Step 1: Clone into skills directory
 
 ```bash
-git clone https://github.com/irritant-in-residence/google_sheets_claude_skill.git ~/.claude/skills/google-sheets
+git clone https://github.com/irritant-in-residence/google_sheets_claude_skill.git ~/.claude/skills/google_sheets_claude_skill
 ```
 
 ### Step 2: Run the skill
