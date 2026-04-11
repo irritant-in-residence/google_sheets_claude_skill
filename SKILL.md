@@ -9,7 +9,7 @@ Read, write, append, and delete data in Google Sheets via the Google Sheets API 
 
 **On load:** Run the pre-flight checks below silently. If all pass, say only "Google Sheets skill ready." If any fail, tell the user what's missing and begin walking through setup starting from the first failing step.
 
-**Skill directory:** `~/.claude/skills/google_sheets_claude_skill`
+**Skill directory:** `~/.claude/skills/google-sheets`
 
 **IMPORTANT — Bash invocation rule:** Never start a Bash tool call with a variable assignment (`VAR=...`) or shell keyword (`for`, `if`, `while`). The first token must always be a binary/command.
 
@@ -26,10 +26,10 @@ ls /usr/local/bin/python3* /Library/Frameworks/Python.framework/Versions/*/bin/p
 <python3_path> -c "import googleapiclient; import google_auth_oauthlib; import mcp; print('deps OK')" 2>&1
 
 # 3. credentials.json exists?
-ls ~/.claude/skills/google_sheets_claude_skill/credentials.json 2>&1
+ls ~/.claude/skills/google-sheets/credentials.json 2>&1
 
 # 4. token.json exists?
-ls ~/.claude/skills/google_sheets_claude_skill/token.json 2>&1
+ls ~/.claude/skills/google-sheets/token.json 2>&1
 ```
 
 **Decision tree:**
@@ -141,7 +141,7 @@ This is required — without a test user, auth fails with 403 "Access blocked."
 
 Move the credentials into place:
 ```bash
-cp "$(ls -t ~/Downloads/client_secret_*.json | head -1)" ~/.claude/skills/google_sheets_claude_skill/credentials.json
+cp "$(ls -t ~/Downloads/client_secret_*.json | head -1)" ~/.claude/skills/google-sheets/credentials.json
 ```
 
 ### Step 5: Authenticate
@@ -149,7 +149,7 @@ cp "$(ls -t ~/Downloads/client_secret_*.json | head -1)" ~/.claude/skills/google
 Run the auth script in the background (use `run_in_background: true`) — it starts a local HTTP server to catch Google's OAuth callback and must be running before the user clicks through the consent flow:
 
 ```bash
-/usr/local/bin/python3 ~/.claude/skills/google_sheets_claude_skill/sheets_auth.py --setup
+/usr/local/bin/python3 ~/.claude/skills/google-sheets/sheets_auth.py --setup
 ```
 
 A browser tab opens. Guide the user:
@@ -158,12 +158,12 @@ A browser tab opens. Guide the user:
 2. "You'll see 'Google hasn't verified this app' — this is normal. Click **Continue**."
 3. "The permissions page shows what access Claude Sheets needs. Click **Continue** to grant access."
 
-The script catches the callback and saves `token.json`. Verify: `ls ~/.claude/skills/google_sheets_claude_skill/token.json`
+The script catches the callback and saves `token.json`. Verify: `ls ~/.claude/skills/google-sheets/token.json`
 
 ### Step 6: Register MCP server
 
 ```bash
-claude mcp add --transport stdio google-sheets -- /usr/local/bin/python3 ~/.claude/skills/google_sheets_claude_skill/sheets_mcp.py
+claude mcp add --transport stdio google-sheets -- /usr/local/bin/python3 ~/.claude/skills/google-sheets/sheets_mcp.py
 ```
 
 Verify: `claude mcp list` — should show `google-sheets: ✓ Connected`
